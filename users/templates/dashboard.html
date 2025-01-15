@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f4f7f9;
+        }
+
+        .dashboard-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+        }
+
+        .dashboard-card .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+        }
+        
+        .bg{
+        background-image: url('/media/article_images/media1.jpg');
+        height: 82vh;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.8); /* Optional: slightly transparent background */
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation (Optional) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MEDIA ARTICLES MANAGEMENT SYSTEM</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home_dashboard' %}">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Signup</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'pass_reset_form' %}">Reset Password</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid bg mt-4">
+        <div class="row">
+            <!-- Total Articles Card -->
+            
+        </div>
+
+        <div class="row mt-4">
+            <!-- Add any other cards or charts here -->
+            MEDIA ARTICLES MANAGEMENT SYSTEM
+        </div>
+    </div>
+
+  <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </div>
+
+    <!-- Bootstrap JS (Popper and Bootstrap bundle) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

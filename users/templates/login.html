@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+       
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Horizontally center */
+            align-items: center; /* Vertically center */
+            height: 100vh; /* Full viewport height */
+            overflow: hidden;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background-color: #007bff;
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .header a:hover {
+            color: #ffdd57;
+        }
+
+        .header .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 24px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 1px;
+            top: 35%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #007bff;
+            
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-container {
+            margin-top: 20px;
+            background-color: #fbeaea;
+            border: 1px solid #d9534f;
+            color: #d9534f;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .error-container ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .error-container li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo">ARTICLE MANAGEMENT SYSTEM</div>
+
+        <!-- Hamburger Menu (Three Lines) -->
+        <div class="dropdown">
+            <span class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </span>
+            <div class="dropdown-content">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'home_dashboard' %}">Home</a>
+                <a href="{% url 'register' %}">Register</a>
+                <!-- <a href="{% url 'pass_reset_form' %}">Change Pass</a> -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Form -->
+    <div class="form-container">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_username">Username</label>
+            <input type="text" name="username" id="id_username" placeholder="Enter your username" required maxlength="15">
+
+            <label for="id_password">Password</label>
+            <div class="password-container">
+                <input type="password" name="password" id="id_password" placeholder="Enter your password" required maxlength="15">
+                <span class="eye-icon" onclick="togglePassword()">👁️</span>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="links">
+            <a href="{% url 'register' %}">Signup</a> |
+            <a href="{% url 'pass_reset_form' %}">Reset Password?</a>
+        </div>
+
+        {% if form.errors %}
+        <div class="error-container">
+            <p><strong>Errors:</strong></p>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Function to toggle password visibility
+        function togglePassword() {
+            const passwordField = document.getElementById('id_password');
+            const eyeIcon = document.querySelector('.eye-icon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.textContent = '🙈'; // Change to closed eye
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.textContent = '👁️'; // Change to open eye
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Article</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 26px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 22px;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        p strong {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        fieldset {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        legend {
+            font-size: 18px;
+            color: #333;
+            padding: 0 10px;
+        }
+        div {
+            margin-bottom: 10px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        label {
+            font-size: 16px;
+            color: #555;
+        }
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #3498db;
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Review Article</h1>
+
+        <h2>{{ article.title }}</h2>
+        <p><strong>Author:</strong> {{ article.author }}</p>
+        <p><strong>Content:</strong> {{ article.content }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Approve or Reject the Article</legend>
+
+                <div>
+                    <input type="radio" id="draft" name="status" value="draft" 
+                           {% if article.status == 'draft' %}checked{% endif %}>
+                    <label for="draft">Draft</label>
+                </div>
+                
+                <div>
+                    <input type="radio" id="approved" name="status" value="approved" 
+                           {% if article.status == 'approved' %}checked{% endif %}>
+                    <label for="approved">Approved</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="rejected" name="status" value="rejected" 
+                           {% if article.status == 'rejected' %}checked{% endif %}>
+                    <label for="rejected">Rejected</label>
+                </div>
+
+                <button type="submit">Submit Review</button>
+            </fieldset>
+        </form>
+
+        <a href="{% url 'editor_dashboard' %}">Back to Article List</a>
+    </div>
+</body>
+</html>

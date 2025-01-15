@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Article</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 500px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Header */
+        h1 {
+            font-size: 2rem;
+            color: #4b6cb7;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form p {
+            margin: 10px 0;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form input:focus,
+        form textarea:focus,
+        form select:focus {
+            border-color: #74ebd5;
+            box-shadow: 0 0 8px rgba(116, 235, 213, 0.4);
+            outline: none;
+        }
+
+        /* Submit Button */
+        form button {
+            background: linear-gradient(135deg, #4b6cb7, #74ebd5);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        form button:hover {
+            background: linear-gradient(135deg, #74ebd5, #4b6cb7);
+            transform: scale(1.05);
+        }
+
+        /* Cancel Link */
+        .cancel-link {
+            display: flex;
+            justify-content: center;
+        }
+
+        .cancel-link a {
+            color: #4b6cb7;
+            text-decoration: none;
+            padding: 12px;
+            border: 2px solid #4b6cb7;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            width: fit-content;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .cancel-link a:hover {
+            background-color: #4b6cb7;
+            color: white;
+        }
+         
+        
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Edit Article: {{ article.title }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save Changes</button>
+        </form>
+        <div class="cancel-link">
+            <a href="{% url 'journalist_dashboard' %}">Cancel</a>
+        </div>
+    </div>
+</body>
+
+</html>

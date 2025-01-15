@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #f9f9f9;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 220px;
+      background-color: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+    }
+
+    .sidebar h3 {
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: block;
+      transition: background-color 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #1abc9c;
+    }
+
+    .logout-btn {
+      margin-top: auto;
+      text-align: center;
+      background-color: #e74c3c;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+
+    /* Header Styles */
+    .header {
+      background-color: #34495e;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      position: fixed;
+      left: 220px;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      font-size: 20px;
+      display: flex;
+      justify-content: space-between; /* Space out content */
+      align-items: center; /* Vertically center content */
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 220px;
+      margin-top: 60px; /* Adjusted for header height */
+      padding: 20px;
+      flex: 1;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    td img {
+      display: block;
+      max-width: 100px;
+      max-height: 100px;
+    }
+
+    /* Button Styles */
+    .btn-edit,
+    .btn-delete,
+    .btn-create {
+      padding: 5px 10px;
+      border-radius: 3px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+    }
+
+    .btn-edit {
+      background-color: #4caf50;
+    }
+
+    .btn-delete {
+      background-color: #f44336;
+    }
+
+    .btn-create {
+      background-color: #007bff;
+    }
+
+    .btn-edit:hover,
+    .btn-delete:hover,
+    .btn-create:hover {
+      opacity: 0.8;
+    }
+
+    /* Pagination */
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .pagination a {
+      margin: 0 5px;
+      padding: 5px 10px;
+      text-decoration: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 3px;
+    }
+
+    .pagination .current {
+      background-color: #333;
+    }
+      /* Search Container */
+      .search-container {
+            display: flex; /* Use flexbox to align input and button */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-container input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px; /* Space between input and button */
+            width: 250px; /* Adjust input width */
+        }
+
+        .search-container button {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #2980b9;
+        }
+          /* User Circle */
+          .user-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative; /* Required for positioning the modal */
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: absolute;
+            top: 60px; /* Adjust position below the user circle */
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            width: 150px; /* Reduced width */
+            min-height: 120px; /* Increased height */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            text-align: center;
+        }
+
+        .modal p {
+            margin: 10px 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 220px;
+            margin-top: 70px;
+            padding: 20px;
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>ADMIN</h3>
+    <a href="#">Dashboard</a>
+    <!-- <a href="{% url 'home_dashboard' %}">View Articles</a> -->
+    <a href="{% url 'user_dashboard' %}">Manage Users</a>
+    
+   
+    <!-- Logout Button -->
+    <form method="POST" action="{% url 'home_dashboard' %}" onsubmit="return confirmLogout()">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    Welcome, {{ user.username }} | Admin Dashboard
+
+
+    <form method="GET">
+      <div class="search-container">
+          <input type="text" name="search" placeholder="Enter Title " value="{{ search_query }}">
+          <button type="submit">Search</button>
+      </div>
+  </form>
+   <!-- User Circle -->
+   <div class="user-circle" onclick="toggleModal()">
+    {{ user.username|slice:":2"|upper }}
+</div>
+  </div>
+  
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2>Articles</h2>
+
+    <!-- Create New Article Button
+    <a href="{% url 'article_form_page1' %}" class="btn-create">Create New Article</a> -->
+
+    <!-- Articles Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Content</th>
+          <th>Author</th>
+          <th>Image</th>
+          <th>Tags</th>
+          <th>Category</th>
+          <th>Publish Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for article in page_obj %}
+        <tr>
+          <td>{{ article.title }}</td>
+          <td>{{ article.content|slice:":50" }}...</td>
+          <td>{{ article.author_id }}</td>
+          <td>
+            {% if article.image %}
+            <img src="{{ article.image.url }}" alt="Article Image" />
+            {% else %}
+            <p>No Image</p>
+            {% endif %}
+          </td>
+          <td>{{ article.tags }}</td>
+          <td>{{ article.category }}</td>
+          <td>{{ article.publish_date }}</td>
+          <td>
+            <a href="{% url 'edit_article' article.id %}" class="btn-edit">Edit</a>
+            <a href="{% url 'article_delete' article.id %}" class="btn-delete"
+              onclick="return confirm('Are you sure you want to delete this article?');">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" style="text-align: center">No articles available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page=1">&laquo; First</a>
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+   <!-- Modal for User Details -->
+   <div class="modal" id="userModal">
+    <p>Name: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p><strong>Role:</strong> {{ user.is_superuser|yesno:"Superuser,Admin" }}</p>
+  </div>
+</div>
+
+  <script>
+    function confirmLogout() {
+      return confirm("Are you sure you want to logout?");
+    }
+  </script>
+</body>
+
+</html>

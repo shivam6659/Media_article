@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            padding-top: 120px; /* Adjust based on header height */
+        }
+
+        #content {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed; /* Fixed position */
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000; /* Stay above other content */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .header form {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Input group styling */
+        .header .input-group {
+            display: flex;
+        }
+
+        .header .input-group input {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            width: 200px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .header .input-group button {
+            background-color: #ff7e5f;
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .header .input-group button:hover {
+            background: #ff512f;
+        }
+
+        /* Hamburger Icon Styles */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .hamburger div {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-width: 50px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .dropdown-menu a {
+            color: #333;
+            padding: 12px 18px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #6a11cb;
+            color: white;
+        }
+
+        /* Article Card Styles */
+        .article-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-top {
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 2px solid #eee;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .footer a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        /* For mobile responsiveness */
+        @media (max-width: 768px) {
+            .header form {
+                display: none; /* Hide the search bar on mobile */
+            }
+
+            .hamburger {
+                display: flex; /* Show hamburger on mobile */
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+            }
+
+            .dropdown-menu a {
+                text-align: left;
+            }
+
+            .header .input-group {
+                width: 100%;
+            }
+
+            .header .input-group input {
+                width: 80%; /* Adjust width on smaller screens */
+                border-radius: 25px;
+            }
+
+            .header .input-group button {
+                width: 20%;
+                border-radius: 0 25px 25px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Article Management System</h1>
+
+        <!-- Search Form with Button Inside the Input Field -->
+        <form method="GET" class="d-flex align-items-center">
+            <div class="input-group">
+                <input type="text" name="search" placeholder="Search articles" value="{{ search_query }}">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+
+        <!-- Hamburger icon for mobile view -->
+        <div class="hamburger" id="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- Dropdown menu -->
+        <div class="dropdown-menu" id="dropdownMenu">
+            <a href="{% url 'home_dashboard' %}">Dashboard</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+            <!-- <a href="{% url 'pass_reset_form' %}">Change Pass</a> -->
+        </div>
+    </div>
+
+    <!-- Content Section -->
+    <div id="content">
+        <h2 class="mb-4">Dashboard</h2>
+
+        <!-- Cards displaying articles -->
+        <div class="row">
+            {% for article in page_obj %}
+                <div class="col-md-3 mb-4">
+                    <div class="card article-card">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" class="card-img-top" alt="Article Image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="No Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text">{{ article.content|slice:":100" }}...</p>
+                            <p class="card-text"><small class="text-muted">Author: {{ article.author }}</small></p>
+                            <p class="card-text"><small class="text-muted">Publish Date: {{ article.publish_date }}</small></p>
+                            {% if article.is_published %}
+                                <span class="badge bg-success">Published</span>
+                            {% else %}
+                                <span class="badge bg-warning">Not Published</span>
+                            {% endif %}
+                            <div class="mt-3 d-flex justify-content-end">
+                                <a href="{% url 'article_view' article.id %}" class="btn btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p>No articles found.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination controls -->
+        <nav aria-label="Article Pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 Article Management System | Built with ❤️ by <a href="">Shivam</a>
+    </div>
+
+    <script>
+        // Toggle Dropdown for Mobile
+        const hamburger = document.getElementById('hamburger');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        hamburger.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('show');
+        });
+        // Close the dropdown if the user clicks outside of it
+        document.addEventListener('click', (event) => {
+    // Check if the click was outside the dropdown and the hamburger icon
+        if (!dropdownMenu.contains(event.target) && !hamburger.contains(event.target)) {
+        dropdownMenu.classList.remove('show'); // Hide the dropdown
+    }
+});
+    </script>
+
+    <!-- Bootstrap JS (Optional for additional interactivity) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

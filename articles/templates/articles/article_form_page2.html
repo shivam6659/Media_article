@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Submission - Page 2</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* Body Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Centered Container */
+        .container {
+            max-width: 600px;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        /* Heading Style */
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            color: #4b6cb7;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Map Styling */
+        #map {
+            height: 200px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button Styling */
+        .btn {
+            padding: 14px;
+            background: linear-gradient(135deg, #74ebd5, #4b6cb7);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #3b8dfe, #00e1fe);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #f64f59, #c471ed);
+        }
+
+        /* Responsive Map */
+        @media (max-width: 768px) {
+            #map {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #map {
+                height: 200px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Article Submission - Page 2</h2>
+
+        <form method="post" enctype="multipart/form-data" class="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Map Container -->
+            <div id="map"></div>
+
+            <button type="submit" class="btn">Submit</button>
+        </form>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+            <a href="{% url 'article_form_page1' %}" class="btn btn-secondary" style="width: 48%;">Back</a>
+            <!-- <a href="{% url 'login' %}" class="btn btn-secondary" style="width: 48%;">Logout</a> -->
+        </div>
+    </div>
+
+    <!-- Leaflet.js Library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([28.6139, 77.209], 12); // Default: New Delhi
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Marker variable
+        let marker;
+
+        // Function to geocode city and set map location
+        function geocodeCity(cityName) {
+            fetch(`https://nominatim.openstreetmap.org/search?city=${cityName}&format=json&limit=1`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = data[0].lat;
+                        const lon = data[0].lon;
+
+                        // Set the map to the city's location
+                        map.setView([lat, lon], 12);
+
+                        // Place the marker
+                        if (marker) {
+                            marker.setLatLng([lat, lon]);
+                        } else {
+                            marker = L.marker([lat, lon]).addTo(map);
+                        }
+
+                        // Update latitude and longitude input fields
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lon;
+
+                        // Optionally, set the city name in the form's city field
+                        document.getElementById('city').value = cityName;
+                    } else {
+                        alert("City not found! Please try again.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error retrieving city data.");
+                    console.error(error);
+                });
+        }
+
+        // Event listener to trigger geocoding on city input
+        document.getElementById('city').addEventListener('blur', function () {
+            const cityName = document.getElementById('city').value;
+            if (cityName) {
+                geocodeCity(cityName);
+            }
+        });
+
+        // Map click event to add or move the marker
+        map.on('click', function (e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            // Update latitude and longitude input fields
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+
+            // If marker exists, move it
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                // Add a new marker
+                marker = L.marker(e.latlng).addTo(map);
+            }
+        });
+    </script>
+</body>
+
+</html>

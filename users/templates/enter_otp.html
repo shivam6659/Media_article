@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter OTP</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            /* background-color: #f4f7fa; */
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Header Styles */
+        .header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background-color: #007bff;
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .header a:hover {
+            color: #ffdd57;
+        }
+
+        .header .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 24px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+         <!-- Header Section -->
+    <header class="header">
+        <div class="logo">ARTICLE MANAGEMENT SYSTEM</div>
+        <!-- <nav>
+            <a href="{% url 'home_dashboard' %}">Home Dashboard</a>
+            <a href="{% url 'register' %}">Signup</a>
+            <a href="{% url 'pass_reset_form' %}">Forgot Password?</a>
+        </nav> -->
+
+        <!-- Hamburger Menu (Three Lines) -->
+        <div class="dropdown">
+            <span class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </span>
+            <div class="dropdown-content">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'home_dashboard' %}">Home</a>
+                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'pass_reset_form' %}">Change Pass</a>
+
+            </div>
+        </div>
+    </header>
+
+<div class="container">
+        <h2>Enter OTP</h2>
+        <p>We have sent an OTP to your email address. Please enter it below to reset your password.</p>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="otp">OTP</label>
+            <input type="text" id="otp" name="otp" required maxlength="6">
+            <button type="submit">Verify OTP</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('submit_otp').addEventListener('submit', function(event){
+            event.preventDefault();
+    
+            // Collecting form data
+            const otp = document.getElementById('otp').value;
+            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+    
+            // Sending the data to the server using fetch
+            fetch('/enter_otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // Include CSRF token
+                },
+                body: JSON.stringify({ otp: otp })  // Send OTP as JSON
+            })
+            .then(response => response.json())  // Assuming the response is in JSON format
+            .then(data => {
+                if (data.success) {
+                    alert('OTP Verified Successfully');
+                    // Optionally, redirect the user or show success message
+                } else {
+                    alert('OTP Verification Failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error with the request');
+            });
+        });
+    </script>
+    
+</body>
+</html>
