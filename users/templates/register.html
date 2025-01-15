@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        /* Form Fields */
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input[type="password"] {
+            font-family: 'Arial', sans-serif;
+        }
+        .eye-icon {
+            position: absolute;
+            left: 160px;
+            bottom: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #007bff;
+            background: none; 
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Submit Button */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Links */
+        .links {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .links a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Error Styling */
+        .error-message {
+            color: red; /* Set error messages to red */
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+         /* Header Styles */
+         .header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background-color: #007bff;
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .header a:hover {
+            color: #ffdd57;
+        }
+
+        .header .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 24px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+                width: 90%;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>     
+         <!-- Header Section -->
+    <header class="header">
+        <div class="logo">ARTICLE MANAGEMENT SYSTEM</div>
+        <!-- <nav>
+            <a href="{% url 'home_dashboard' %}">Home Dashboard</a>
+            <a href="{% url 'register' %}">Signup</a>
+            <a href="{% url 'pass_reset_form' %}">Forgot Password?</a>
+        </nav> -->
+
+        <!-- Hamburger Menu (Three Lines) -->
+        <div class="dropdown">
+            <span class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </span>
+            <div class="dropdown-content">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'home_dashboard' %}">Home</a>
+                <a href="{% url 'register' %}">Register</a>
+                <!-- <a href="{% url 'pass_reset_form' %}">Change Pass</a> -->
+
+            </div>
+        </div>
+    </header>
+
+
+<div class="form-container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div>
+                <label for="id_username">Username:</label>
+                <input type="text" name="username" id="id_username" placeholder="Enter your username" required maxlength="14">
+                <span id="usernameError" class="error-message"></span>
+            </div>
+        
+            <!-- Email Field -->
+            <div>
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" id="id_email" placeholder="Enter your email" required>
+                <span id="emailError" class="error-message"></span>
+            </div>
+        
+            <!-- Password Field -->
+<div>
+    <label for="id_password1">Password:</label>
+    <div style="position: relative;">
+        <input type="password" name="password1" id="id_password1" placeholder="Enter your password" required minlength="10" maxlength="15">
+        <button type="button" class="eye-icon" onclick="togglePasswordVisibility('id_password1', this)" style="position: absolute; right: 10px; top: 10px; background: none; border: none; cursor: pointer;">
+            👁️
+        </button>
+    </div>
+    <span id="password1Error" class="error-message"></span>
+</div>
+
+<!-- Confirm Password Field -->
+<div>
+    <label for="id_password2">Confirm Password:</label>
+    <div style="position: relative;">
+        <input type="password" name="password2" id="id_password2" placeholder="Confirm your password" required minlength="10" maxlength="15">
+        <button type="button"  class="eye-icon" onclick="togglePasswordVisibility('id_password2', this)" style="position: absolute; right: 10px; top: 10px; background: none; border: none; cursor: pointer;">
+            👁️
+        </button>
+    </div>
+    <span id="password2Error" class="error-message"></span>
+</div>
+        
+            <!-- Role Selection -->
+            <div>
+                <label for="id_role">Role:</label>
+                <select name="role" id="id_role" required>
+                    <option value="">Select a role</option>
+                    <option value="Journalist">Journalist</option>
+                    <option value="Editor">Editor</option>
+                </select>
+                <span id="roleError" class="error-message"></span>
+            </div>
+        
+            <button type="submit">Submit</button>
+        </form>
+        
+        <div class="links">
+            <a href="{% url 'login' %}">Already have an account? Login</a>
+        </div>
+
+        {% if form.errors %}
+        <div class="error-container">
+            <p><strong>Errors:</strong></p>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const usernameField = document.getElementById("id_username");
+            const emailField = document.getElementById("id_email");
+            const password1Field = document.getElementById("id_password1");
+            const password2Field = document.getElementById("id_password2");
+            const roleField = document.getElementById("id_role");
+    
+            // Validate Username
+            const validateUsername = () => {
+                const usernameError = document.getElementById("usernameError");
+                const username = usernameField.value;
+                const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_]{0,13}$/; // No spaces, not starting with number, max length 14
+    
+                if (!usernameRegex.test(username)) {
+                    usernameError.textContent = "Username must start with a letter, no spaces, and max 14 characters.";
+                    usernameError.style.display = "block"; // Show error
+                } else {
+                    usernameError.style.display = "none"; // Hide error
+                }
+            };
+    
+            // Validate Email
+            const validateEmail = () => {
+                const emailError = document.getElementById("emailError");
+                const email = emailField.value;
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Valid email with @ in the middle and .com at the end
+                const emailValidation = /^[a-zA-Z0-9._%+-]+(@gmail|@mobiloitte)\.(com|in|gov)$/; // Ensure email ends with @gmail.com only
+
+                if (!emailRegex.test(email) || !emailValidation.test(email)) {
+                    emailError.textContent = "Please enter a valid email address and no extra periods.";
+                    emailError.style.display = "block"; // Show error
+                } else {
+                    emailError.style.display = "none"; // Hide error
+                }
+            };
+    
+            // Validate Password
+            const validatePassword = () => {
+                const password1Error = document.getElementById("password1Error");
+                const password = password1Field.value;
+                const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z\d\W_]{10,15}$/; // Min 10, max 15, 1 uppercase, 1 special char, digits
+    
+                if (!passwordRegex.test(password)) {
+                    password1Error.textContent = "Password must be 10-15 characters, start with a capital letter, contain digits and a special character.";
+                    password1Error.style.display = "block"; // Show error
+                } else {
+                    password1Error.style.display = "none"; // Hide error
+                }
+            };
+    
+            // Validate Confirm Password
+            const validateConfirmPassword = () => {
+                const password2Error = document.getElementById("password2Error");
+                const password = password1Field.value;
+                const confirmPassword = password2Field.value;
+    
+                if (confirmPassword !== password) {
+                    password2Error.textContent = "Passwords do not match.";
+                    password2Error.style.display = "block"; // Show error
+                } else {
+                    password2Error.style.display = "none"; // Hide error
+                }
+            };
+    
+            // Validate Role
+            const validateRole = () => {
+                const roleError = document.getElementById("roleError");
+                const role = roleField.value;
+    
+                if (!role) {
+                    roleError.textContent = "Please select a role.";
+                    roleError.style.display = "block"; // Show error
+                } else {
+                    roleError.style.display = "none"; // Hide error
+                }
+            };
+    
+            // Event Listeners
+            usernameField.addEventListener("input", validateUsername);
+            emailField.addEventListener("input", validateEmail);
+            password1Field.addEventListener("input", validatePassword);
+            password2Field.addEventListener("input", validateConfirmPassword);
+            roleField.addEventListener("change", validateRole);
+        });
+        function togglePasswordVisibility(inputId, button) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "🙈"; // Change icon to indicate "hide"
+        } else {
+            input.type = "password";
+            button.textContent = "👁️"; // Change icon to indicate "show"
+        }
+    }
+    </script>
+</body>
+</html>
